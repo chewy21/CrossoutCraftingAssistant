@@ -12,4 +12,14 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ObjectListView\ObjectListView2012.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="ObjectListView">
+      <HintPath>bin\Debug\net8.0-windows\ObjectListView.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

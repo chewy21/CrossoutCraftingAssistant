@@ -95,12 +95,42 @@ namespace CrossoutCraftingAssistant
 
             crossoutDb = await PopulateFullRecipeClass(crossoutDb);
 
+            var nodes = new List<TreeViewItem>();
+
+            // Add a root node for the CrossoutDb object
+            var crossoutDbNode = new TreeViewItem { Header = crossoutDb.Recipe.Item.Name };
 
 
 
-            lvRecipe.Items.Add(crossoutDb.Recipe.Item);
+            //PopulateTreeView(crossoutDb);
 
-            
+
+            // Add child nodes for the properties of the CrossoutDb object
+            foreach (Recipe recipe in crossoutDb.Recipe.Ingredients)
+            {
+                var node = new TreeViewItem { Header = recipe.Item.Name };
+                node.Tag = recipe;
+                crossoutDbNode.Items.Add(node);
+                if (recipe.Ingredients != null)
+                {
+                    Recipe value = recipe;
+                    if (value != null)
+                    {
+                        AddChildNodes(node, value);
+                    }
+                }
+            }
+
+            // put node into treeViewRecipe
+            //tvRecipe.Items.add
+            tvRecipe.Items.Clear();
+            foreach (var node in nodes)
+            {
+                tvRecipe.Items.Add(node);
+            }
+            //lvRecipe.Items.Add(crossoutDb.Recipe.Item);
+
+
 
 
 
@@ -143,6 +173,24 @@ namespace CrossoutCraftingAssistant
             return crossoutDb;
         }
 
+        //---------- fonction remplissage de treeNode recursive ----------//
+        void AddChildNodes(TreeViewItem parentNode, Recipe value)
+        {
+            foreach (Recipe recipe in value.Ingredients)
+            {
+                var node = new TreeViewItem { Header = recipe.Item.Name };
+                node.Tag = recipe;
+                parentNode.Items.Add(node);
+                if (value != null)
+                {
+                    var childValue = recipe;
+                    if (childValue != null)
+                    {
+                        AddChildNodes(node, childValue);
+                    }
+                }
+            }
+        }
 
         //---------- fonction de récupération de json sur api Cdb ----------//
 
